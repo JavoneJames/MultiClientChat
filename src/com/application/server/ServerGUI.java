@@ -14,7 +14,8 @@ public class ServerGUI extends GUI {
     private JButton submitButton;
     private JLabel displayLabel;
     private JTextArea displayServerFeed;
-    private ScrollPane scrollPane;
+    private JScrollPane scrollPane;
+
     @Override
     protected void instantiateComponents() {
 
@@ -23,8 +24,8 @@ public class ServerGUI extends GUI {
         displayLabel = new JLabel();
         inputTextField = new JTextField();
         submitButton = new JButton();
-        displayServerFeed = new JTextArea();
-
+        displayServerFeed = new JTextArea(20,30);
+        scrollPane = new JScrollPane();
     }
 
     @Override
@@ -53,23 +54,28 @@ public class ServerGUI extends GUI {
         displayLabel.setText("Server Feed");
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.insets = new Insets(10,10, 0,0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(displayLabel, gbc);
         //textarea to displayed server feed messages
         displayServerFeed.setRows(20);
         displayServerFeed.setColumns(30);
+        scrollPane.setViewportView(displayServerFeed);
+        scrollPane.setWheelScrollingEnabled(true);
         displayServerFeed.setEditable(false);
         displayServerFeed.setText(null);
         gbc.gridwidth = 3;
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10,10,10,10);
+        gbc.fill = GridBagConstraints.BOTH;
         panel.add(displayServerFeed, gbc);
         //text field to input IP the server should try to connect to
         inputTextField.setColumns(30);
         gbc.gridwidth = 2;
         gbc.gridx = 0;
         gbc.gridy = 2;
+        gbc.insets = new Insets(0,10,0,0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(inputTextField, gbc);
         //submit button for text field data
@@ -77,6 +83,7 @@ public class ServerGUI extends GUI {
         gbc.gridwidth = 1;
         gbc.gridx = 2;
         gbc.gridy = 2;
+        gbc.insets = new Insets(5,0,10,10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(submitButton, gbc);
 
