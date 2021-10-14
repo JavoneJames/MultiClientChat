@@ -1,11 +1,18 @@
 package com.application.gui;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 public abstract class GUI {
     protected JFrame frame;
     protected JPanel panel;
-    protected javax.swing.JTextField inputTextField;
+    protected JTextField inputTextField;
     protected JButton submitButton;
     protected JTextArea displayServerFeed;
     protected JScrollPane scrollPane;
@@ -34,6 +41,7 @@ public abstract class GUI {
         frame.setVisible(true);
     }
     protected abstract void attachComponentsToFrame();
-    //protected abstract void handlerForClosingFrame();
 
+
+    //protected abstract void handlerForClosingFrame();
 }

@@ -2,7 +2,9 @@ package com.application.server;
 
 import com.application.gui.GUI;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 public class ServerGUI extends GUI {
 
