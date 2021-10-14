@@ -1,9 +1,9 @@
 package com.application.server;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 public class ServerMain {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ServerProcess().createWindowFrame());
+        SwingUtilities.invokeLater(new ServerProcess());
     }
 }

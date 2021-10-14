@@ -1,13 +1,6 @@
 package com.application.gui;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 public abstract class GUI {
     protected JFrame frame;
@@ -31,7 +24,7 @@ public abstract class GUI {
         //calls method that is used to instantiate the components to be used
         instantiateComponents();
 
-        frame.setTitle("Chat Client");
+        frame.setTitle("Client");
         frame.setSize(350,350);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
