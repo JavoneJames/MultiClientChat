@@ -11,44 +11,48 @@ import java.rmi.server.ServerNotActiveException;
 
 public class ServerProcess extends ServerGUI implements Runnable {
 
+    private ServerSocket serverSocket;
+
     ServerProcess() {
         createWindowFrame();
     }
 
     @Override
     public void run() {
-        super.submitButton.addActionListener(e -> {
-            if (e.getSource() == super.submitButton){
-                if (!textFieldInputHandler())
-                    serverSocketHandler();
-            }
-        });
+            super.submitButton.addActionListener(e -> {
+                if (e.getSource() == super.submitButton){
+                    if (!textFieldInputHandler())
+                        serverSocketHandler();
+                }
+            });
     }
 
     private void serverSocketHandler() {
         short PORT = Short.parseShort(inputTextField.getText());
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {//instantiate serverSocket object - param 'PORT'
+        try  {//instantiate serverSocket object - param 'PORT'
+            serverSocket = new ServerSocket(PORT);
             if (serverSocket.isClosed())//checks is the serverSocket is available
                 throw new ServerNotActiveException(PORT + " cannot be accessed");
             System.out.println("starting");
-            super.displayServerFeed.append("Starting Server... \n");
+            submitButton.setEnabled(false);
+            displayServerFeed.append("start...");
             Runnable runnable = new Runnable() {
-                @Override
                 public void run() {
-                    incomingConnectionsHandler(serverSocket);//calls method that deals with incoming connections
+                    incomingConnectionHandler(serverSocket);
                 }
             };
+            new Thread(runnable).start();
         } catch (IOException | ServerNotActiveException ioException) {
             ioException.printStackTrace();
         }
     }
 
     @SuppressWarnings("InfiniteLoopStatement")
-    private void incomingConnectionsHandler(@NotNull ServerSocket serverSocket) {
+    private void incomingConnectionHandler(@NotNull ServerSocket serverSocket) {
+        System.out.println("waiting...");
         while (true) {
-            Socket socket;
             try {
-                socket = serverSocket.accept();
+                Socket socket = serverSocket.accept();
                 if (socket.isClosed())
                     throw new SocketException("cannot connect to client socket");
             } catch (IOException e) {
