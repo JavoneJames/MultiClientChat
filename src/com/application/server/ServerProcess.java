@@ -3,49 +3,45 @@ package com.application.server;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JOptionPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.rmi.server.ServerNotActiveException;
 
-public class ServerProcess extends ServerGUI implements Runnable {
-
-    private ServerSocket serverSocket;
-
-    ServerProcess() {
-        createWindowFrame();
-    }
+public class ServerProcess extends ServerGUI implements ActionListener {
 
     @Override
-    public void run() {
-        super.submitButton.addActionListener(e -> {
-            if (e.getSource() == super.submitButton) {
-                if (textFieldInputHandler())//calls method that handles input validation
-                    serverSocketHandler();//calls method that begins with handling serverSocket instantiation
-            }
-        });
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == super.submitButton) {
+            if (textFieldInputHandler()) {//calls method that handles input validation
+                short PORT = Short.parseShort(inputTextField.getText());
+                try {//calls method that begins with handling serverSocket instantiation
+                    serverSocketHandler(new ServerSocket(PORT));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }}
     }
-
-    private void serverSocketHandler() {
-        short PORT = Short.parseShort(inputTextField.getText());
+    private void serverSocketHandler(ServerSocket serverSocket) {
         try {//instantiate serverSocket object - param 'PORT'
-            serverSocket = new ServerSocket(PORT);
             if (serverSocket.isClosed())//checks is the serverSocket is available
-                throw new ServerNotActiveException(PORT + " cannot be accessed");
+                throw new ServerNotActiveException(serverSocket.getLocalPort() + " cannot be accessed");
             System.out.println("starting");
             submitButton.setEnabled(false);
-            displayServerFeed.append("start...");
-            Runnable runnable = () -> incomingConnectionHandler(serverSocket);
+            displayServerFeed.append("start...\n");
+            Runnable runnable = () -> this.incomingConnectionHandler(serverSocket);
             new Thread(runnable).start();//execute while loop for connections to minimize thread blocking
-        } catch (IOException | ServerNotActiveException ioException) {
+        } catch (ServerNotActiveException ioException) {
             ioException.printStackTrace();
         }
     }
-
     @SuppressWarnings("InfiniteLoopStatement")
     private void incomingConnectionHandler(@NotNull ServerSocket serverSocket) {
         System.out.println("waiting...");
+        displayServerFeed.append("waiting...");
         while (true) {
             try {//accepts client connections and binds it to a socket
                 Socket socket = serverSocket.accept();
@@ -56,7 +52,6 @@ public class ServerProcess extends ServerGUI implements Runnable {
             }
         }
     }
-
     private boolean textFieldInputHandler() {
         if (super.inputTextField.getText().isEmpty()) {//checks if the text field is empty
             JOptionPane.showMessageDialog(frame, "Empty input");
@@ -71,6 +66,4 @@ public class ServerProcess extends ServerGUI implements Runnable {
         }
         return true;
     }
-
-
 }
