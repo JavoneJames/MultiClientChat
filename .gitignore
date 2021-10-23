@@ -2,4 +2,8 @@
 .git/
 out/
 /MultiClientChat.iml
+<<<<<<< HEAD
 src/com/application/server/notes
+=======
+notes
+>>>>>>> server-implementation

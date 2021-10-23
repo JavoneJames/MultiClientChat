@@ -2,9 +2,13 @@ package com.application.server;
 
 import com.application.gui.GUI;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
 
 public class ServerGUI extends GUI {
+
 
     @Override
     protected void attachComponentsToFrame() {
@@ -48,7 +52,7 @@ public class ServerGUI extends GUI {
         gbc.insets = new Insets(5,0,10,10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         super.panel.add(super.submitButton, gbc);
-
+        submitButton.addActionListener((ActionListener) this);
         super.frame.add(super.panel, null);
     }
 }
