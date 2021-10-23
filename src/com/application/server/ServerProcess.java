@@ -12,7 +12,7 @@ import java.net.SocketException;
 import java.rmi.server.ServerNotActiveException;
 
 public class ServerProcess extends ServerGUI implements ActionListener {
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == super.submitButton) {
@@ -25,6 +25,7 @@ public class ServerProcess extends ServerGUI implements ActionListener {
                 }
             }}
     }
+
     private void serverSocketHandler(ServerSocket serverSocket) {
         try {//instantiate serverSocket object - param 'PORT'
             if (serverSocket.isClosed())//checks is the serverSocket is available

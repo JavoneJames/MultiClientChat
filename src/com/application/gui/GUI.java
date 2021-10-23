@@ -18,7 +18,7 @@ public abstract class GUI {
     protected JScrollPane scrollPane;
     protected JLabel displayLabel;
 
-    protected void instantiateComponents(){
+    protected synchronized void instantiateComponents(){
         frame = new JFrame();
         panel = new JPanel();
         inputTextField = new JTextField();
@@ -27,7 +27,7 @@ public abstract class GUI {
         displayServerFeed = new JTextArea();
         scrollPane = new JScrollPane();
     }
-    public void createWindowFrame(){
+    public synchronized void createWindowFrame(){
         //calls method that is used to instantiate the components to be used
         instantiateComponents();
 
