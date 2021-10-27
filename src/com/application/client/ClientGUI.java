@@ -2,12 +2,13 @@ package com.application.client;
 
 import com.application.gui.GUI;
 
-
-import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 public class ClientGUI extends GUI {
+
+
 
     @Override
     protected void attachComponentsToFrame() {
@@ -43,7 +44,8 @@ public class ClientGUI extends GUI {
         gbc.insets = new Insets(5,0,10,10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         super.panel.add(super.submitButton, gbc);
-
+        submitButton.addActionListener(new ClientProcess());
         super.frame.add(super.panel, null);
     }
+
 }

@@ -1,7 +1,5 @@
 package com.application.server;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,7 +38,7 @@ public class ServerProcess extends ServerGUI implements ActionListener {
         }
     }
     @SuppressWarnings("InfiniteLoopStatement")
-    private void incomingConnectionHandler(@NotNull ServerSocket serverSocket) {
+    private void incomingConnectionHandler(ServerSocket serverSocket) {
         System.out.println("waiting...");
         displayServerFeed.append("waiting...");
         while (true) {
