@@ -14,18 +14,16 @@ public class ClientProcess extends ClientGUI implements ActionListener {
     ClientProcess(){
         try {
             InetAddress serverName = InetAddress.getByName("localhost");
-            if (!serverName.isReachable(10000))
-                throw new RuntimeException("server address is not reachable");
-            final int PORT = 5536;
-            connectToServer(serverName, PORT);
+            Runnable runnable = () -> connectToServer(serverName);
+            new Thread(runnable).start();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void connectToServer(InetAddress serverName, int port) {
+    private void connectToServer(InetAddress serverName) {
         try {
-            Socket socket = new Socket(serverName, port);
+            Socket socket = new Socket(serverName, 5536);
             if (!socket.isConnected())
                 throw new ConnectException("cannot connect to server");
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());

@@ -11,7 +11,7 @@ public class ClientGUI extends GUI {
 
 
     @Override
-    protected void attachComponentsToFrame() {
+    protected synchronized void attachComponentsToFrame() {
         super.panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 

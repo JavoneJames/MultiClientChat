@@ -31,7 +31,12 @@ public class ServerProcess extends ServerGUI implements ActionListener {
             System.out.println("starting");
             submitButton.setEnabled(false);
             displayServerFeed.append("start...\n");
-            Runnable runnable = () -> this.incomingConnectionHandler(serverSocket);
+            Runnable runnable = new Runnable() {
+                @Override
+                public synchronized void run() {
+                    incomingConnectionHandler(serverSocket);
+                }
+            };
             new Thread(runnable).start();//execute while loop for connections to minimize thread blocking
         } catch (ServerNotActiveException ioException) {
             ioException.printStackTrace();
@@ -39,13 +44,15 @@ public class ServerProcess extends ServerGUI implements ActionListener {
     }
     @SuppressWarnings("InfiniteLoopStatement")
     private void incomingConnectionHandler(ServerSocket serverSocket) {
-        System.out.println("waiting...");
-        displayServerFeed.append("waiting...");
         while (true) {
+            System.out.println("waiting...");
+            displayServerFeed.append("waiting...");
             try {//accepts client connections and binds it to a socket
                 Socket socket = serverSocket.accept();
                 if (socket.isClosed())//checks if socket is available
                     throw new SocketException("cannot connect to client socket");
+                System.out.println("connection accepted...");
+                displayServerFeed.append("connection accepted...");
             } catch (IOException e) {
                 e.printStackTrace();
             }
