@@ -1,5 +1,7 @@
 package com.server.process;
 
+import com.server.gui.ServerGUI;
+
 import javax.swing.SwingUtilities;
 
 public class ServerMain   {
@@ -7,7 +9,7 @@ public class ServerMain   {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new ServerProcess();
+                new ServerProcess().createWindowFrame();
             }
         });
     }

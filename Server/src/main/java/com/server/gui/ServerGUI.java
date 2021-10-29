@@ -1,29 +1,28 @@
 package com.server.gui;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 public abstract class ServerGUI {
 
-    JFrame frame = new JFrame();
-    JPanel panel = new JPanel();
-    JLabel displayLabel = new JLabel();
-    JButton submitButton = new JButton();
-    JScrollPane scrollPane = new JScrollPane();
-    protected JTextArea displayServerFeed = new JTextArea();
-    JTextField inputTextField = new JTextField();
+    protected volatile JTextArea displayServerFeed;
+    private final JFrame frame;
+    private final JPanel panel;
+    private final JLabel displayLabel;
+    private final JButton submitButton;
+    private final JScrollPane scrollPane;
+    private final JTextField inputTextField;
 
     public ServerGUI() {
-        createWindowFrame();
+        frame = new JFrame();
+        panel = new JPanel();
+        inputTextField = new JTextField();
+        submitButton = new JButton();
+        displayLabel = new JLabel();
+        displayServerFeed = new JTextArea();
+        scrollPane = new JScrollPane();
     }
  /*   protected JFrame frame;
     protected JPanel panel;
@@ -54,12 +53,12 @@ public abstract class ServerGUI {
         attachComponentsToFrame();
         frame.pack();
         frame.setVisible(true);
+        serverSocketHandler();
     }
 
     protected void attachComponentsToFrame(){
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
         //display label
         displayLabel.setText("Server Feed");
         gbc.gridx = 0;
@@ -100,4 +99,5 @@ public abstract class ServerGUI {
         frame.add(panel, null);
     }
 
+    protected abstract void serverSocketHandler();
 }
