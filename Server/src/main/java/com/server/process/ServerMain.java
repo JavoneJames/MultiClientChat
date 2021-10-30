@@ -1,4 +1,4 @@
-package com.server.process;
+/*package com.server.process;
 
 import com.server.gui.ServerGUI;
 
@@ -13,4 +13,4 @@ public class ServerMain   {
             }
         });
     }
-}
+}*/
