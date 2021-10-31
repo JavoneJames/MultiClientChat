@@ -10,9 +10,7 @@ public abstract class ServerGUI {
     final JFrame frame = new JFrame();
     final JPanel panel = new JPanel();
     final JLabel displayLabel = new JLabel();
-    final JButton submitButton = new JButton();
     final JScrollPane scrollPane = new JScrollPane();
-    final JTextField inputTextField = new JTextField();
     protected JTextArea displayServerFeed = new JTextArea();
 
     protected void createWindowFrame() {

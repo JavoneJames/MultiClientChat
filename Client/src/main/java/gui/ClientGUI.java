@@ -10,13 +10,11 @@ import java.awt.Insets;
 public abstract class ClientGUI {
     private final JFrame frame = new JFrame();
     private final JPanel panel = new JPanel();
-    private final JLabel displayLabel = new JLabel();
     private final JButton submitButton = new JButton();
     private final JScrollPane scrollPane = new JScrollPane();
     private final JTextField inputTextField = new JTextField();
     protected JTextArea displayServerFeed = new JTextArea();
     private final GridBagConstraints gbc = new GridBagConstraints();
-    ClientProcess clientProcess;
 
     protected synchronized void createWindowFrame() {
         frame.setTitle("Client");
@@ -32,12 +30,7 @@ public abstract class ClientGUI {
     protected void attachComponentsToFrame() {
         panel.setLayout(new GridBagLayout());
         //display label
-        displayLabel.setText("Server Feed");
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(10, 10, 0, 0);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(displayLabel, gbc);
+
         //textarea to displayed server feed messages
         displayServerFeed.setRows(20);
         displayServerFeed.setColumns(30);
