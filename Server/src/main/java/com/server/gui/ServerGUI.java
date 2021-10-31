@@ -50,23 +50,7 @@ public abstract class ServerGUI {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.BOTH;
         panel.add(displayServerFeed, gbc);
-        //text field to input IP the server should try to connect to
-        inputTextField.setColumns(30);
-        gbc.gridwidth = 2;
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.insets = new Insets(0, 10, 0, 0);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(inputTextField, gbc);
-        //submit button for text field data
-        submitButton.setText("Connect");
-        gbc.gridwidth = 1;
-        gbc.gridx = 2;
-        gbc.gridy = 2;
-        gbc.insets = new Insets(5, 0, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(submitButton, gbc);
-        //super.submitButton.addActionListener((ActionListener) this);
+
         frame.add(panel, null);
     }
 

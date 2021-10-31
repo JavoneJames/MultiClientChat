@@ -19,7 +19,7 @@ public abstract class ClientGUI {
     ClientProcess clientProcess;
 
     protected synchronized void createWindowFrame() {
-        frame.setTitle("Server");
+        frame.setTitle("Client");
         frame.setSize(350, 350);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
