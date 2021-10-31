@@ -4,16 +4,15 @@ import gui.ClientGUI;
 
 import javax.swing.SwingUtilities;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class ClientProcess extends ClientGUI implements Runnable {
-    private InetAddress localhost;
+    private final InetAddress localhost;
     int port;
-    private ClientProcess(){}
+
     private ClientProcess(InetAddress localhost, int port) {
         this.localhost = localhost;
         this.port = port;
