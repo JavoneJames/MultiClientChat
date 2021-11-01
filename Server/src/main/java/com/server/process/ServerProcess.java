@@ -1,5 +1,6 @@
 package com.server.process;
 
+import com.server.User;
 import com.server.gui.ServerGUI;
 
 import java.io.IOException;
@@ -11,9 +12,9 @@ import java.util.concurrent.Executors;
 
 public class ServerProcess extends ServerGUI {
 
-  Vector<ClientHandler> clientHandlerVector = new Vector<>();
-  private ServerSocket serverSocket;
   private static int counter = 1;
+  private static final Vector<ClientHandler> clientHandlerVector = new Vector<>();
+  private ServerSocket serverSocket;
 
   ServerProcess(int port) {
     try {
@@ -23,6 +24,10 @@ public class ServerProcess extends ServerGUI {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  static int getCounter() {
+    return counter++;
   }
 
   @Override
@@ -56,6 +61,11 @@ public class ServerProcess extends ServerGUI {
     System.out.println("created method");
   }
 
-    int getCounter(){return counter++;}
-
+  protected static Vector<User> getListOfUsers() {
+    Vector<User> listOfUsers = new Vector<>();
+    for (ClientHandler clientHandler : clientHandlerVector)
+      if (clientHandler.user != null)
+        listOfUsers.addElement(clientHandler.user);
+    return listOfUsers;
+  }
 }
