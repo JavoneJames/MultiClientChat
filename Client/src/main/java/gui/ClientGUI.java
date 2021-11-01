@@ -54,7 +54,7 @@ public abstract class ClientGUI {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(inputTextField, gbc);
         //submit button for text field data
-        submitButton.setText("Connect");
+        submitButton.setText("Send");
         gbc.gridwidth = 1;
         gbc.gridx = 2;
         gbc.gridy = 2;
