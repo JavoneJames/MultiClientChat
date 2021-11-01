@@ -9,11 +9,13 @@ import java.net.Socket;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ServerProcess extends ServerGUI {
 
-  private static int counter = 1;
   private static final Vector<ClientHandler> clientHandlerVector = new Vector<>();
+  protected static AtomicInteger atomicInteger = new AtomicInteger(1);
+  private static int counter = 1;
   private ServerSocket serverSocket;
 
   ServerProcess(int port) {
@@ -27,7 +29,21 @@ public class ServerProcess extends ServerGUI {
   }
 
   static int getCounter() {
-    return counter++;
+    return atomicInteger.getAndIncrement();
+  }
+
+  protected static Vector<User> getListOfUsers() {
+    Vector<User> listOfUsers = new Vector<>();
+    for (ClientHandler clientHandler : clientHandlerVector)
+      if (clientHandler.user != null)
+        listOfUsers.addElement(clientHandler.user);
+    return listOfUsers;
+  }
+
+  static void notifyOFNewClients(int clientID) {
+    for (ClientHandler clientHandler : clientHandlerVector)
+      if (clientHandler.user != null && clientHandler.user.getID() != clientID)
+        clientHandler.sendOutputToClient(String.valueOf(clientID));
   }
 
   @Override
@@ -59,13 +75,5 @@ public class ServerProcess extends ServerGUI {
     executorService.execute(clientHandler::execute);
     clientHandlerVector.addElement(clientHandler);
     System.out.println("created method");
-  }
-
-  protected static Vector<User> getListOfUsers() {
-    Vector<User> listOfUsers = new Vector<>();
-    for (ClientHandler clientHandler : clientHandlerVector)
-      if (clientHandler.user != null)
-        listOfUsers.addElement(clientHandler.user);
-    return listOfUsers;
   }
 }

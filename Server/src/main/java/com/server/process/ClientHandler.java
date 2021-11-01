@@ -24,14 +24,12 @@ public class ClientHandler {
   }
 
   public void execute() {
-    System.out.println("here");
     createUser();
     notificationsHandler(clientID);
-    try(ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
+    ServerProcess.notifyOFNewClients(clientID);
+    try (ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
       while (true) {
-
         String line = inputStream.readUTF();
-        System.out.println(line);
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -43,25 +41,22 @@ public class ClientHandler {
     user = new User(clientID);
   }
 
-  private void notificationsHandler(int clientID){
+  private void notificationsHandler(int clientID) {
     Vector<User> users = ServerProcess.getListOfUsers();
     if (users.size() == 0) return;
     for (User user : users)
       if (clientID == user.getID())
-        sendOutputToClient("client " + user.getID() + " has joined");
-
-      if (clientID != user.getID())
-        sendOutputToClient("client " + user.getID() + " has joined");
+        System.out.println("client " + user.getID() + " has joined");
+    if (clientID != user.getID())
+      sendOutputToClient("client " + user.getID() + " has joined");
   }
 
-  private void sendOutputToClient(String message) {
+  void sendOutputToClient(String message) {
     try {
-      try {
-        outputStream.writeUTF(message);
-        outputStream.flush();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      outputStream.writeUTF(message);
+      outputStream.flush();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 }
