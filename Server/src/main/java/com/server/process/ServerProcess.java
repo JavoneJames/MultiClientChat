@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ServerProcess extends ServerGUI {
@@ -25,23 +28,22 @@ public class ServerProcess extends ServerGUI {
     }
 
     public static void main(String[] args) throws InterruptedException, InvocationTargetException {
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                new ServerProcess(5536).createWindowFrame();
-            }
-        });
+            SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+                    new ServerProcess(5536).createWindowFrame();
+                }
+            });
     }
 
     @Override
     protected void serverSocketHandler() {
         System.out.println("starting....");
         displayServerFeed.append("starting...\n");
-        new Thread(() -> incomingConnectionsHandler(serverSocket)).start();
+            new Thread(() -> incomingConnectionsHandler(serverSocket)).start();
     }
 
     private void incomingConnectionsHandler(ServerSocket serverSocket) {
-        lock.lock();
         while (true) {
             System.out.println("waiting...");
             displayServerFeed.append("waiting...\n");
@@ -49,11 +51,17 @@ public class ServerProcess extends ServerGUI {
                 Socket socket = serverSocket.accept();
                 System.out.println("connection accepted...");
                 displayServerFeed.append("connection accepted...\n");
+                multiClientHandler(socket);
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                lock.unlock();
             }
         }
+    }
+
+    private void multiClientHandler(Socket socket) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        System.out.println("here method");
+        executorService.execute(() -> new ClientHandler(socket).execute());
+        System.out.println("created method");
     }
 }
