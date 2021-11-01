@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.Executor;
+import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
@@ -16,6 +16,7 @@ public class ServerProcess extends ServerGUI {
 
     ReentrantLock lock = new ReentrantLock();
     private ServerSocket serverSocket;
+    Vector<ClientHandler> clientHandlerVector = new Vector<>();
 
     private ServerProcess(int port) {
         try {
@@ -60,8 +61,10 @@ public class ServerProcess extends ServerGUI {
 
     private void multiClientHandler(Socket socket) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
+        ClientHandler clientHandler = new ClientHandler(socket);
         System.out.println("here method");
-        executorService.execute(() -> new ClientHandler(socket).execute());
+        executorService.execute(clientHandler::execute);
+        clientHandlerVector.addElement(clientHandler);
         System.out.println("created method");
     }
 }
