@@ -19,7 +19,7 @@ public abstract class ServerGUI {
   private final GridBagConstraints gbc = new GridBagConstraints();
   protected JTextArea displayServerFeed = new JTextArea();
 
-  protected void createWindowFrame() {
+  public void createWindowFrame() {
     frame.setTitle("Server");
     frame.setSize(350, 350);
     frame.setLocationRelativeTo(null);

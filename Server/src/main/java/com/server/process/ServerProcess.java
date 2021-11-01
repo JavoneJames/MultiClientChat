@@ -16,7 +16,7 @@ public class ServerProcess extends ServerGUI {
     private ServerSocket serverSocket;
     Vector<ClientHandler> clientHandlerVector = new Vector<>();
 
-    private ServerProcess(int port) {
+    ServerProcess(int port) {
         try {
             serverSocket = new ServerSocket(port);
             if (serverSocket.isClosed())
@@ -24,15 +24,6 @@ public class ServerProcess extends ServerGUI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) throws InterruptedException, InvocationTargetException {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                @Override
-                public void run() {
-                    new ServerProcess(5536).createWindowFrame();
-                }
-            });
     }
 
     @Override
