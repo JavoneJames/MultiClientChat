@@ -10,11 +10,9 @@ import java.net.Socket;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class ServerProcess extends ServerGUI {
 
-    ReentrantLock lock = new ReentrantLock();
     private ServerSocket serverSocket;
     Vector<ClientHandler> clientHandlerVector = new Vector<>();
 
