@@ -3,13 +3,17 @@ package process;
 import gui.ClientGUI;
 
 import javax.swing.SwingUtilities;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class ClientProcess extends ClientGUI implements Runnable {
+public class ClientProcess extends ClientGUI implements Runnable, ActionListener {
     private final InetAddress localhost;
     int port;
 
@@ -23,7 +27,7 @@ public class ClientProcess extends ClientGUI implements Runnable {
             try {
                 var ClientProcess = new ClientProcess(InetAddress.getByName("localhost"), 5536);
                 ClientProcess.createWindowFrame();
-                ClientProcess.run();
+                //ClientProcess.run();
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
@@ -32,15 +36,33 @@ public class ClientProcess extends ClientGUI implements Runnable {
 
     @Override
     public void run() {
-        try {
-            Socket socket = new Socket(this.localhost, this.port);
+        connectToServer();
+        new Thread(() ->{
+
+        }).start();
+    }
+
+    private void connectToServer() {
+        try(Socket socket = new Socket(this.localhost, this.port)) {
             if (!socket.isConnected()) {
                 displayServerFeed.append("cannot connect to server\n");
                 throw new ConnectException("cannot connect to server");
             }
             displayServerFeed.append("connect to server\n");
+            ObjectInputStream inputStream =
+                new ObjectInputStream(socket.getInputStream());
+            ObjectOutputStream outputStream =
+                new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == submitButton) {
+            if (inputTextField.getText().isEmpty())
+                System.out.println("empty");
         }
     }
 }

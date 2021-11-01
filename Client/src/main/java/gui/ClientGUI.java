@@ -6,13 +6,14 @@ import javax.swing.*;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 
 public abstract class ClientGUI {
     private final JFrame frame = new JFrame();
     private final JPanel panel = new JPanel();
-    private final JButton submitButton = new JButton();
+    protected final JButton submitButton = new JButton();
     private final JScrollPane scrollPane = new JScrollPane();
-    private final JTextField inputTextField = new JTextField();
+    protected final JTextField inputTextField = new JTextField();
     protected JTextArea displayServerFeed = new JTextArea();
     private final GridBagConstraints gbc = new GridBagConstraints();
 
@@ -61,6 +62,7 @@ public abstract class ClientGUI {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(submitButton, gbc);
         //super.submitButton.addActionListener((ActionListener) this);
+        submitButton.addActionListener((ActionListener) this);
         frame.add(panel, null);
     }
 }
