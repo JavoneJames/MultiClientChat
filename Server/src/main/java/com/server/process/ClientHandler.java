@@ -4,6 +4,7 @@ import com.server.User;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Vector;
 
@@ -11,9 +12,15 @@ public class ClientHandler {
   private final Socket socket;
   User user;
   private int clientID;
+  private ObjectOutputStream outputStream;
 
   public ClientHandler(Socket socket) {
     this.socket = socket;
+    try {
+      this.outputStream = new ObjectOutputStream(socket.getOutputStream());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void execute() {
@@ -41,8 +48,20 @@ public class ClientHandler {
     if (users.size() == 0) return;
     for (User user : users)
       if (clientID == user.getID())
-        System.out.println("client " + user.getID() + " has joined");
+        sendOutputToClient("client " + user.getID() + " has joined");
+
       if (clientID != user.getID())
-        System.out.println("client " + user.getID() + " has joined");
+        sendOutputToClient("client " + user.getID() + " has joined");
+  }
+
+  private void sendOutputToClient(String message) {
+    try {
+      try {
+        outputStream.writeUTF(message);
+        outputStream.flush();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
   }
 }
