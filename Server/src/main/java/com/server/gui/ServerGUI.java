@@ -17,7 +17,7 @@ public abstract class ServerGUI {
   private final JLabel displayLabel = new JLabel();
   private final JScrollPane scrollPane = new JScrollPane();
   private final GridBagConstraints gbc = new GridBagConstraints();
-  protected JTextArea displayServerFeed = new JTextArea();
+  public JTextArea displayServerFeed = new JTextArea();
 
   public void createWindowFrame() {
     frame.setTitle("Server");

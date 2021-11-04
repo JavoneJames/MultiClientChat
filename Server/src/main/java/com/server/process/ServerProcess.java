@@ -42,7 +42,7 @@ public class ServerProcess extends ServerGUI {
   static void notifyOFNewClients(int clientID) {
     for (ClientHandler clientHandler : clientHandlerVector)
       if (clientHandler.user != null && clientHandler.user.getID() != clientID)
-        clientHandler.sendOutputToClient(String.valueOf(clientID));
+        clientHandler.sendOutputToClient("client " + clientID + " has joined");
   }
 
   @Override

@@ -20,7 +20,6 @@ public class ClientProcess extends ClientGUI implements Runnable, ActionListener
   int port;
   private ObjectOutputStream outputStream;
   private ObjectInputStream inputStream;
-  private Socket socket;
 
   private ClientProcess(InetAddress localhost, int port) {
     this.localhost = localhost;
@@ -46,21 +45,25 @@ public class ClientProcess extends ClientGUI implements Runnable, ActionListener
 
   private void connectToServer() {
     try {
-      socket = new Socket(localhost, port);
+      Socket socket = new Socket(localhost, port);
       if (!socket.isConnected()) {
         displayServerFeed.append("cannot connect to server\n");
         throw new ConnectException("cannot connect to server");
       }
       displayServerFeed.append("connect to server\n");
       outputStream = new ObjectOutputStream(socket.getOutputStream());
+      inputStream = new ObjectInputStream(socket.getInputStream());
     } catch (IOException e) {
       e.printStackTrace();
     }
+    readMessagesFromServer();
+  }
+
+  private void readMessagesFromServer() {
     Executor executorService = Executors.newSingleThreadExecutor();
     executorService.execute(() -> {
       while (true) {
         try {
-          inputStream = new ObjectInputStream(socket.getInputStream());
           String line = inputStream.readUTF();
           System.out.println(line);
         } catch (IOException e) {
