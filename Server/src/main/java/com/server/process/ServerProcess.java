@@ -15,7 +15,6 @@ public class ServerProcess extends ServerGUI {
 
   private static final Vector<ClientHandler> clientHandlerVector = new Vector<>();
   protected static AtomicInteger atomicInteger = new AtomicInteger(1);
-  private static int counter = 1;
   private ServerSocket serverSocket;
 
   ServerProcess(int port) {

@@ -12,12 +12,15 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class ClientProcess extends ClientGUI implements Runnable, ActionListener {
   private final InetAddress localhost;
   int port;
   private ObjectOutputStream outputStream;
   private ObjectInputStream inputStream;
+  private Socket socket;
 
   private ClientProcess(InetAddress localhost, int port) {
     this.localhost = localhost;
@@ -43,7 +46,7 @@ public class ClientProcess extends ClientGUI implements Runnable, ActionListener
 
   private void connectToServer() {
     try {
-      Socket socket = new Socket(localhost, port);
+      socket = new Socket(localhost, port);
       if (!socket.isConnected()) {
         displayServerFeed.append("cannot connect to server\n");
         throw new ConnectException("cannot connect to server");
@@ -53,6 +56,18 @@ public class ClientProcess extends ClientGUI implements Runnable, ActionListener
     } catch (IOException e) {
       e.printStackTrace();
     }
+    Executor executorService = Executors.newSingleThreadExecutor();
+    executorService.execute(() -> {
+      while (true) {
+        try {
+          inputStream = new ObjectInputStream(socket.getInputStream());
+          String line = inputStream.readUTF();
+          System.out.println(line);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    });
   }
 
   @Override

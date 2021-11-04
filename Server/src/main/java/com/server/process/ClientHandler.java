@@ -30,6 +30,7 @@ public class ClientHandler {
     try (ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
       while (true) {
         String line = inputStream.readUTF();
+        System.out.println(line);
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -46,7 +47,7 @@ public class ClientHandler {
     if (users.size() == 0) return;
     for (User user : users)
       if (clientID == user.getID())
-        System.out.println("client " + user.getID() + " has joined");
+        sendOutputToClient("client " + user.getID() + " has joined");
     if (clientID != user.getID())
       sendOutputToClient("client " + user.getID() + " has joined");
   }
