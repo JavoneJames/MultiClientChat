@@ -28,10 +28,6 @@ public class ClientProcess extends ClientGUI implements ActionListener {
   void connectToServer() {
     try {
       socket = new Socket(localhost, port);
-      if (!socket.isConnected()) {
-        displayServerFeed.append("cannot connect to server\n");
-        throw new ConnectException("cannot connect to server");
-      }
       displayServerFeed.append("connect to server\n");
       outputStream = new ObjectOutputStream(socket.getOutputStream());
 
