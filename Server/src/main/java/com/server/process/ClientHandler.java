@@ -27,6 +27,10 @@ public class ClientHandler {
     createUser();
     notificationsHandler(clientID);
     ServerProcess.notifyOfNewClients(clientID);
+    readMessagesSentToTheServer();
+  }
+  //handles reading messages sent to the server and sends it to other clients
+  private void readMessagesSentToTheServer() {
     try (ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
       while (true) {
         String line = inputStream.readUTF();
@@ -38,11 +42,12 @@ public class ClientHandler {
     }
   }
 
+  //creates a new user object and gives it an ID
   private void createUser() {
     clientID = ServerProcess.getCounter();
     user = new User(clientID);
   }
-
+  //notifies user of itself and any other clients already connected
   private void notificationsHandler(int clientID) {
     Vector<User> users = ServerProcess.getListOfUsers();
     if (users.size() == 0) return;
@@ -53,7 +58,7 @@ public class ClientHandler {
         sendOutputToClient("client " + user.getID() + " has joined");
     }
   }
-
+  //sends message from the user client to other clients via socket 
   void sendOutputToClient(String message) {
     try {
       outputStream.writeUTF(message);

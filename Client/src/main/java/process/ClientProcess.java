@@ -17,7 +17,6 @@ public class ClientProcess extends ClientGUI implements ActionListener {
   private final InetAddress localhost;
   int port;
   private ObjectOutputStream outputStream;
-  private ObjectInputStream inputStream;
   private Socket socket;
 
   ClientProcess(InetAddress localhost, int port) {
