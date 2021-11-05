@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.concurrent.Executor;
@@ -28,19 +27,19 @@ public class ClientProcess extends ClientGUI implements ActionListener {
   void connectToServer() {
     try {
       socket = new Socket(localhost, port);
-      displayServerFeed.append("connect to server\n");
+      displayServerFeed.append("connected to server\n");
       outputStream = new ObjectOutputStream(socket.getOutputStream());
-
+      readMessagesFromServer();
     } catch (IOException e) {
       e.printStackTrace();
     }
-    readMessagesFromServer();
   }
+
   //runs in separate executor thread - reads messages from the server
   private void readMessagesFromServer() {
     Executor executorService = Executors.newSingleThreadExecutor();
     executorService.execute(() -> {
-      try (ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())){
+      try (ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
         while (true) {
           String line = inputStream.readUTF();
           System.out.println(line);
