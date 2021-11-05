@@ -42,10 +42,17 @@ public class ServerProcess extends ServerGUI {
   }
 
   //notifies existing clients of newer clients joining
-  static void notifyOfNewClients(int clientID) {
+  static synchronized void notifyOfNewClients(int clientID) {
     for (ClientHandler clientHandler : clientHandlerVector)
       if (clientHandler.user != null && clientHandler.user.getID() != clientID)
         clientHandler.sendOutputToClient("client " + clientID + " has joined");
+  }
+
+  static synchronized void sendMessageToExistingClients(int clientID, String line) {
+    if (clientHandlerVector.size() == 1) return;
+    for (ClientHandler clientHandler : clientHandlerVector)
+      if (clientHandler.user.getID() != clientID)
+        clientHandler.sendOutputToClient(clientID + ":: " + line);
   }
 
   @Override//override method used to start server

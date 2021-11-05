@@ -56,7 +56,7 @@ public class ClientProcess extends ClientGUI implements ActionListener {
     });
   }
 
-  @Override//sends messages from the text field to the server
+  @Override//Send messages from the text field to the server
   public synchronized void actionPerformed(ActionEvent e) {
     if (e.getSource() == submitButton) {
       if (!inputTextField.getText().isEmpty()) {

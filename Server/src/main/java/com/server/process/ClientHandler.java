@@ -1,7 +1,6 @@
 package com.server.process;
 
 import com.server.User;
-import com.server.gui.ServerGUI;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,9 +10,10 @@ import java.util.Vector;
 
 public class ClientHandler {
   private final Socket socket;
+  User user;
   private int clientID;
   private ObjectOutputStream outputStream;
-  User user;
+
   public ClientHandler(Socket socket) {
     this.socket = socket;
     try {
@@ -31,6 +31,7 @@ public class ClientHandler {
       while (true) {
         String line = inputStream.readUTF();
         System.out.println(line);
+        ServerProcess.sendMessageToExistingClients(clientID, line);
       }
     } catch (IOException e) {
       e.printStackTrace();
