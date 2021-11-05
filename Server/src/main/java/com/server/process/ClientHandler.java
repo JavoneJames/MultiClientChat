@@ -11,11 +11,9 @@ import java.util.Vector;
 
 public class ClientHandler {
   private final Socket socket;
-  User user;
   private int clientID;
   private ObjectOutputStream outputStream;
-  ServerGUI serverGUI;
-
+  User user;
   public ClientHandler(Socket socket) {
     this.socket = socket;
     try {
@@ -28,12 +26,11 @@ public class ClientHandler {
   public void execute() {
     createUser();
     notificationsHandler(clientID);
-    ServerProcess.notifyOFNewClients(clientID);
+    ServerProcess.notifyOfNewClients(clientID);
     try (ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
       while (true) {
         String line = inputStream.readUTF();
         System.out.println(line);
-
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -48,11 +45,12 @@ public class ClientHandler {
   private void notificationsHandler(int clientID) {
     Vector<User> users = ServerProcess.getListOfUsers();
     if (users.size() == 0) return;
-    for (User user : users)
+    for (User user : users) {
       if (clientID == user.getID())
         sendOutputToClient("client " + user.getID() + " has joined");
-    if (clientID != user.getID())
-      sendOutputToClient("client " + user.getID() + " has joined");
+      if (clientID != user.getID())
+        sendOutputToClient("client " + user.getID() + " has joined");
+    }
   }
 
   void sendOutputToClient(String message) {

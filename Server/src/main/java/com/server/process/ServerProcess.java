@@ -27,10 +27,12 @@ public class ServerProcess extends ServerGUI {
     }
   }
 
+  //gets clients ID for joining and incremeent counter by 1 for the next client
   static int getCounter() {
     return atomicInteger.getAndIncrement();
   }
 
+  //returns a vector of all current clients connected to the server
   protected static Vector<User> getListOfUsers() {
     Vector<User> listOfUsers = new Vector<>();
     for (ClientHandler clientHandler : clientHandlerVector)
@@ -39,19 +41,21 @@ public class ServerProcess extends ServerGUI {
     return listOfUsers;
   }
 
-  static void notifyOFNewClients(int clientID) {
+  //notifies existing clients of newer clients joining
+  static void notifyOfNewClients(int clientID) {
     for (ClientHandler clientHandler : clientHandlerVector)
       if (clientHandler.user != null && clientHandler.user.getID() != clientID)
         clientHandler.sendOutputToClient("client " + clientID + " has joined");
   }
 
-  @Override
+  @Override//override method used to start server
   protected void serverSocketHandler() {
     System.out.println("starting....");
     displayServerFeed.append("starting...\n");
     new Thread(() -> incomingConnectionsHandler(serverSocket)).start();
   }
 
+  //accepts connections via serversocket and binds to socket object
   private void incomingConnectionsHandler(ServerSocket serverSocket) {
     while (true) {
       System.out.println("waiting...");
@@ -67,12 +71,11 @@ public class ServerProcess extends ServerGUI {
     }
   }
 
+  //hands off socket connection to another thread to deal with processing info
   private void multiClientHandler(Socket socket) {
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     ClientHandler clientHandler = new ClientHandler(socket);
-    System.out.println("here method");
     executorService.execute(clientHandler::execute);
     clientHandlerVector.addElement(clientHandler);
-    System.out.println("created method");
   }
 }
