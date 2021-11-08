@@ -34,8 +34,11 @@ public class ClientHandler {
     try (ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
       while (true) {
         String line = inputStream.readUTF();
-        System.out.println(line);
-        ServerProcess.sendMessageToExistingClients(clientID, line);
+        if (line.equals("alive")){
+          sendOutputToClient("200");
+          ServerProcess.sendMessageToExistingClients(clientID, line);}else{
+
+        }
       }
     } catch (IOException e) {
       e.printStackTrace();

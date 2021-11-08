@@ -41,6 +41,7 @@ public class ClientProcess extends ClientGUI implements ActionListener {
     executorService.execute(() -> {
       try (ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
         while (true) {
+          sendMessageToServer("alive");
           String line = inputStream.readUTF();
           System.out.println(line);
         }
@@ -55,12 +56,16 @@ public class ClientProcess extends ClientGUI implements ActionListener {
     if (e.getSource() == submitButton) {
       if (!inputTextField.getText().isEmpty()) {
         try {
-          outputStream.writeUTF(inputTextField.getText());
-          outputStream.flush();
+          sendMessageToServer(inputTextField.getText());
         } catch (IOException ex) {
           ex.printStackTrace();
         }
       }
     }
+  }
+
+  private void sendMessageToServer(String message) throws IOException {
+    outputStream.writeUTF(message);
+    outputStream.flush();
   }
 }
